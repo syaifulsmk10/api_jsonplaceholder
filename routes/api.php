@@ -139,6 +139,10 @@ Route::get('/posts', function (Request $request) {
     return response()->json($posts);
 });
 
+
+
+//get data dengan id dan parameter
+
 Route::get('/users/{id}/{param}', function (Request $request, $id, $param) {
     // Ambil data dari JSONPlaceholder
     $posts = Http::get('https://jsonplaceholder.typicode.com/posts')->json();
@@ -269,4 +273,68 @@ Route::get('/users/{userId}/photos', function ($userId) {
     } else {
         return Response()->json(['error' => 'Failed to fetch posts'], $albumsResponse->status());
     }
+});
+
+
+
+
+
+
+
+//Post api ke data enpoint 
+
+
+Route::post("/posttt", function (Request $request) {
+    $userId = $request->input('userId');
+    $title = $request->input('title');
+    $body = $request->input('body');
+
+    $reqsponse = http::post('https://jsonplaceholder.typicode.com/posts', [
+        'userId' => $userId,
+        'title' => $title,
+        'body' => $body,
+    ]);
+
+
+    return response()->json([
+        'message' => "berhasil post data"
+    ]);
+});
+
+
+//atau bisa juga anda menggunakan request->all
+
+
+
+// Route::post('/posttt', function (Request $request) {
+//     $post = $request->all();
+//     $response = Http::post('https://jsonplaceholder.typicode.com/posts', $post);
+
+
+//         return response()->json([
+//             'message' => 'Berhasil post data',
+
+//         ]);
+// });
+
+
+
+
+
+
+//Put Api ke endpoint
+
+Route::put('/posttt/{id}', function (Request $request, $id) {
+    $update = $request->all();
+
+     $url = 'https://jsonplaceholder.typicode.com/posts/' . $id;
+
+
+    $response = Http::put($url, $update);
+
+    return response()->json([
+        "message" => "berhasil update"
+    ]);
+
+
 });
